@@ -1,14 +1,6 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
-import type { SortField, SortOrder } from "@/lib/useSortedFilteredWishes"; // This will be created
-import { WishIcon } from "@/components/WishModal";
-
-export type Wish = {
-  id?: number;
-  image: string;
-  title: string;
-  description: string;
-  price: number;
-};
+import type { SortField, SortOrder } from "@/lib/useSortedFilteredWishes";
+import { WishIcon, type Wish } from "../types";
 
 interface WishContextType {
   wishes: Wish[];

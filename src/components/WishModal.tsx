@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -32,34 +31,14 @@ import {
 } from "lucide-react";
 import { addWish, updateWish } from "@/lib/utils";
 import { useWishContext } from "@/context/WishContext";
-
-export enum WishIcon {
-  None = "",
-  Baby = "Baby",
-  Apple = "Apple",
-  Car = "Car",
-  Dog = "Dog",
-  Cat = "Cat",
-  Gift = "Gift",
-  Heart = "Heart",
-  Home = "Home",
-  Star = "Star",
-  Sun = "Sun",
-  Moon = "Moon",
-}
-
-type Wish = {
-  image: WishIcon;
-  title: string;
-  description: string;
-  price: number;
-};
+import { WishIcon } from "@/types";
+import type { Wish } from "@/types";
 
 type WishModalMode = "add" | "edit";
 type WishModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (wish: Wish) => void;
+  onSubmit: (wish: Partial<Wish>) => void;
   mode: WishModalMode;
   wish?: Wish;
 };
@@ -71,7 +50,7 @@ export const WishModal: React.FC<WishModalProps> = ({
   mode,
   wish,
 }) => {
-  const [image, setImage] = React.useState<WishIcon | "">(wish?.image || "");
+  const [image, setImage] = React.useState<WishIcon>(wish?.image || "");
 
   const iconOptions = [
     { label: "Baby", value: WishIcon.Baby, icon: Baby },
@@ -108,7 +87,7 @@ export const WishModal: React.FC<WishModalProps> = ({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const newWish = {
-      image,
+      image: image as WishIcon,
       title,
       description,
       price: Number(price),
@@ -122,7 +101,6 @@ export const WishModal: React.FC<WishModalProps> = ({
           "[WishModal] addWish complete, waiting 1000ms before reloadWishes"
         );
         setTimeout(() => {
-          console.log("[WishModal] calling reloadWishes after 1000ms");
           reloadWishes();
         }, 1000);
       } catch (err) {}

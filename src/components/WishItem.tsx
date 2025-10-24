@@ -1,17 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { WishModal, WishIcon } from "./WishModal";
+import { WishModal } from "./WishModal";
 import { deleteWish } from "@/lib/utils";
 import { useWishContext } from "@/context/WishContext";
-
-export type Wish = {
-  id?: number;
-  image: WishIcon;
-  title: string;
-  description: string;
-  price: number;
-  createdAt?: string;
-};
+import { WishIcon } from "@/types";
+import type { Wish } from "@/types";
 
 import {
   Baby,
@@ -73,7 +66,10 @@ export const WishItem: React.FC<Wish> = ({
       <div className="bg-card rounded-lg shadow p-4 max-w-xs w-full flex flex-col items-start">
         <div className="flex items-center justify-center mb-3 h-40">
           {(() => {
-            const IconComp = iconMap[image as WishIcon];
+            const IconComp =
+              image && image in iconMap
+                ? iconMap[image as keyof typeof iconMap]
+                : null;
             return IconComp ? <IconComp className="w-20 h-20" /> : null;
           })()}
         </div>

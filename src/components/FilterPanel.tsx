@@ -91,7 +91,7 @@ export const FilterPanel: React.FC = () => {
       <WishModal
         open={modalOpen}
         onOpenChange={setModalOpen}
-        onSubmit={(wish) => {
+        onSubmit={() => {
           setModalOpen(false);
           reloadWishes();
         }}
