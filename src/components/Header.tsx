@@ -25,7 +25,7 @@ export const Header = () => {
     <header className="top-0 z-50 w-full">
       <div className="flex h-16 items-center justify-between w-full">
         <a
-          href="/"
+          href="https://lvlashnin.github.io/Wishestra/"
           className="flex items-center justify-center gap-2 font-bold text-lg transition-colors hover:text-foreground/80"
         >
           <img
