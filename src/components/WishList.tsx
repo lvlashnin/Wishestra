@@ -1,6 +1,7 @@
 import { WishItem } from "./WishItem";
 import { useWishContext } from "@/context/WishContext";
 import { useSortedFilteredWishes } from "@/lib/useSortedFilteredWishes";
+import { Spinner } from "./Spinner";
 
 export const WishList = () => {
   return <WishListContent />;
@@ -16,11 +17,11 @@ const WishListContent = () => {
     sortOrder
   );
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Spinner />;
   if (error) return <div className="text-red-500">{error}</div>;
   return (
     <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] justify-items-center gap-4">
         {sortedWishes.slice(0, visibleCount).map((wish) => (
           <WishItem key={wish.id} {...wish} />
         ))}
