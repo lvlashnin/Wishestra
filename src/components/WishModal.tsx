@@ -97,20 +97,21 @@ export const WishModal: React.FC<WishModalProps> = ({
         await addWish(newWish);
         onSubmit(newWish);
         onOpenChange(false);
-        console.log(
-          "[WishModal] addWish complete, waiting 1000ms before reloadWishes"
-        );
         setTimeout(() => {
           reloadWishes();
         }, 1000);
-      } catch (err) {}
+      } catch (err) {
+        console.log("cant add wish");
+      }
     } else if (mode === "edit" && wish?.id) {
       try {
         await updateWish(wish.id, newWish);
         onSubmit(newWish);
         onOpenChange(false);
         reloadWishes();
-      } catch (err) {}
+      } catch (err) {
+        console.log("cant update wish");
+      }
     } else {
       onSubmit(newWish);
       onOpenChange(false);
