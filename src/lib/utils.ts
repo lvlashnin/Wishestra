@@ -1,5 +1,7 @@
+const API_URL = "https://wishestra.onrender.com/";
+
 export async function deleteWish(id: number): Promise<void> {
-  const response = await fetch(`http://localhost:3000/wishes/${id}`, {
+  const response = await fetch(`${API_URL}/wishes/${id}`, {
     method: "DELETE",
   });
   if (!response.ok) {
@@ -15,7 +17,7 @@ export async function updateWish(
     price: number;
   }
 ): Promise<any> {
-  const response = await fetch(`http://localhost:3000/wishes/${id}`, {
+  const response = await fetch(`${API_URL}/wishes/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...wish, updatedAt: new Date().toISOString() }),
@@ -32,7 +34,7 @@ export async function addWish(wish: {
   price: number;
 }): Promise<any> {
   const now = new Date().toISOString();
-  const response = await fetch("http://localhost:3000/wishes", {
+  const response = await fetch(`${API_URL}/wishes`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...wish, createdAt: now, updatedAt: now }),

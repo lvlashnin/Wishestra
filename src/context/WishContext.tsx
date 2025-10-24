@@ -42,7 +42,7 @@ export const WishProvider: React.FC<{ children: React.ReactNode }> = ({
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("http://localhost:3000/wishes");
+      const res = await fetch("https://wishestra.onrender.com/wishes");
       if (!res.ok) throw new Error("Failed to load wishes");
       const data = await res.json();
       setWishes(
