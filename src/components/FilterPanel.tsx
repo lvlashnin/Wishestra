@@ -8,35 +8,28 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { Plus } from "lucide-react";
-import { AddNewWishModal } from "./AddNewWishModal";
+import { WishModal } from "./WishModal";
+import { useWishContext } from "@/context/WishContext";
 
-type FilterPanelProps = {
-  onDateSortChange?: (value: "oldest" | "newest") => void;
-  onPriceSortChange?: (value: "high-to-low" | "low-to-high") => void;
-  onAddWish?: () => void;
-  onSearchChange?: (value: string) => void;
-};
-
-export const FilterPanel: React.FC<FilterPanelProps> = ({
-  onDateSortChange,
-  onPriceSortChange,
-  onAddWish,
-  onSearchChange,
-}) => {
+export const FilterPanel: React.FC = () => {
+  const {
+    reloadWishes,
+    search,
+    setSearch,
+    sortField,
+    setSortField,
+    sortOrder,
+    setSortOrder,
+  } = useWishContext();
   const [modalOpen, setModalOpen] = React.useState(false);
-  const [search, setSearch] = React.useState("");
-  const [dateSort, setDateSort] = React.useState<"oldest" | "newest">("newest");
-  const [priceSort, setPriceSort] = React.useState<
-    "high-to-low" | "low-to-high"
-  >("high-to-low");
 
   const handleDateSort = (value: "oldest" | "newest") => {
-    setDateSort(value);
-    onDateSortChange?.(value);
+    setSortField("createdAt");
+    setSortOrder(value === "newest" ? "desc" : "asc");
   };
   const handlePriceSort = (value: "high-to-low" | "low-to-high") => {
-    setPriceSort(value);
-    onPriceSortChange?.(value);
+    setSortField("price");
+    setSortOrder(value === "high-to-low" ? "desc" : "asc");
   };
 
   return (
@@ -44,11 +37,7 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       <input
         type="text"
         value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          if (typeof onSearchChange === "function")
-            onSearchChange(e.target.value);
-        }}
+        onChange={(e) => setSearch(e.target.value)}
         placeholder="Search wishes..."
         className="border border-input rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-background text-foreground min-w-[180px] md:min-w-[180px] w-full md:w-auto"
       />
@@ -56,7 +45,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm">
-            Date: {dateSort === "newest" ? "Newest" : "Oldest"}
+            Date:{" "}
+            {sortField === "createdAt" && sortOrder === "desc"
+              ? "Newest"
+              : "Oldest"}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
@@ -72,7 +64,10 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm">
-            Price: {priceSort === "high-to-low" ? "High to low" : "Low to high"}
+            Price:{" "}
+            {sortField === "price" && sortOrder === "desc"
+              ? "High to low"
+              : "Low to high"}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
@@ -85,7 +80,6 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      {/* Add new wish button */}
       <Button
         size="sm"
         onClick={() => setModalOpen(true)}
@@ -94,13 +88,14 @@ export const FilterPanel: React.FC<FilterPanelProps> = ({
       >
         <Plus className="w-4 h-4 mr-1" /> Add new wish
       </Button>
-      <AddNewWishModal
+      <WishModal
         open={modalOpen}
         onOpenChange={setModalOpen}
         onSubmit={(wish) => {
           setModalOpen(false);
-          // Optionally call onAddWish or handle wish here
+          reloadWishes();
         }}
+        mode="add"
       />
     </div>
   );

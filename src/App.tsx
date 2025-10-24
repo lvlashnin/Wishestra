@@ -1,14 +1,19 @@
-import "./App.css";
 import { FilterPanel } from "./components/FilterPanel.tsx";
 import { Header } from "./components/Header.tsx";
+import { Pagination } from "./components/Pagination.tsx";
+import { WishList } from "./components/WishList.tsx";
+import { WishProvider } from "./context/WishContext";
 
 function App() {
   return (
-    <>
-      <Header />
-      <FilterPanel />
-      <h1>hello</h1>
-    </>
+    <WishProvider>
+      <div className="container mx-auto px-4">
+        <Header />
+        <FilterPanel />
+        <WishList />
+        <Pagination />
+      </div>
+    </WishProvider>
   );
 }
 
